@@ -50,16 +50,20 @@ android {
         versionName flutterVersionName
     }
 
+    signingConfigs {
+        release {
+            keyAlias 'key0'
+            keyPassword System.getenv('shall_v_talk_flutter_key_password')
+            storeFile file('../key/keystore.jks')
+            storePassword System.getenv('shall_v_talk_flutter_key_password')
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig {
-                keyAlias 'key0'
-                keyPassword System.getenv('shall_v_talk_flutter_key_password')
-                storeFile file('../key/keystore.jks')
-                storePassword System.getenv('shall_v_talk_flutter_key_password')
-            }
+            signingConfig signingConfigs.release
         }
     }
 }
