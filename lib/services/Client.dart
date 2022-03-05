@@ -20,12 +20,13 @@ class Client {
 
   late ClientConfig? _config;
 
+  /// 是否已连接
   bool _IsConnected = false;
 
   Socket? _socket;
 
-  /// 会话ID
-  String? sessionId;
+  /// 昵称
+  String? _nickName;
 
   Client._internal() {}
 
@@ -51,10 +52,17 @@ class Client {
     return;
   }
 
+  void updateNickName(String nickName) {}
+
   void _onData(Uint8List data) {}
+
+  void _sendData(String data) {
+    _socket?.write(data);
+  }
 
   /// 停止客户端
   Future<void> stop() async {
     await _socket?.close();
+    _socket = null;
   }
 }
