@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 typedef OnData = void Function(Uint8List data);
 
-/// 解析一场
+/// 解析异常
 class ParseException implements Exception {
   final String message;
 

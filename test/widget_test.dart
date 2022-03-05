@@ -40,16 +40,6 @@ void main() {
 
     parser.write(data).write(data);
     expect(count, 2, reason: "应该分割了2条消息");
-
-    expectMessage = "{test}";
-    data = Uint8List.fromList(expectMessage.runes.map((e) => e).toList());
-    parser = RecordParser("\r\n", (data) {
-      count += 1;
-    }, maxRecordSize: expectMessage.length * 2 - 1);
-
-    try {} on ParseException catch (e) {
-      expect(e.message, "当前缓存已超出最大上限");
-    }
   });
 
   test("RecordParserTest02", () {
