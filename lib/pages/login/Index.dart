@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shall_v_talk_flutter/services/Client.dart';
+
+import 'Config.dart';
 
 /// 登录页面
 class LoginPage extends StatefulWidget {
@@ -12,6 +15,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+
+  final _client = Client();
 
   bool _loading = false;
 
@@ -49,9 +54,12 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   buildTextFormField("昵称",
                       initialValue: _nickName, onSaved: onUpdateNickName),
-                  ElevatedButton(
-                    child: const Text("进入"),
-                    onPressed: doLogin,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 14),
+                    child: ElevatedButton(
+                      child: const Text("进入"),
+                      onPressed: doLogin,
+                    ),
                   )
                 ],
               ),
@@ -60,7 +68,19 @@ class _LoginPageState extends State<LoginPage> {
         ));
 
     return Scaffold(
-        appBar: AppBar(title: const Text("登录")),
+        appBar: AppBar(
+          title: const Text("登录"),
+          actions: [
+            IconButton(
+                onPressed: () async {
+                  ClientConfig? config = await showConfigDialog(context);
+                  if (null != config) {
+                    _client.update(config);
+                  }
+                },
+                icon: const Icon(Icons.settings))
+          ],
+        ),
         body: SingleChildScrollView(
           child: Container(
             child: form,
@@ -95,16 +115,15 @@ class _LoginPageState extends State<LoginPage> {
       FormFieldSetter<String?>? onSaved,
       bool obscureText = false}) {
     return TextFormField(
-      initialValue: initialValue,
-      enabled: !_loading,
-      validator: _validate,
-      decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          labelText: labelText,
-          contentPadding: const EdgeInsets.all(14)),
-      obscureText: obscureText,
-      onSaved: onSaved,
-    );
+        initialValue: initialValue,
+        enabled: !_loading,
+        validator: _validate,
+        decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            labelText: labelText,
+            contentPadding: const EdgeInsets.all(14)),
+        obscureText: obscureText,
+        onSaved: onSaved);
   }
 
   void doLogin() {
