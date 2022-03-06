@@ -24,9 +24,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
 
   project.set_dart_entrypoint_arguments(std::move(command_line_arguments));
 
+  int cX = GetSystemMetrics(SM_CXFULLSCREEN);
+  int cY = GetSystemMetrics(SM_CYFULLSCREEN);
+  int height = (int)(cY * 0.66);
+  int width = (int)(height / 16 * 9);
+  int originX = (int)(cX / 2 - width / 2);
+  int originY = (int)(cY / 2 - height / 2);
   FlutterWindow window(project);
-  Win32Window::Point origin(10, 10);
-  Win32Window::Size size(1280, 720);
+  Win32Window::Point origin(originX, originY);
+  Win32Window::Size size(width, height);
   if (!window.CreateAndShow(L"shall_v_talk_flutter", origin, size)) {
     return EXIT_FAILURE;
   }
